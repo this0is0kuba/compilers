@@ -30,3 +30,6 @@ bin/
 
 ### gen ###
 gen/
+
+### .idea ###
+.idea/
