@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ead7c13-53f7-4a54-aa36-8ca777811c86" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/compilers.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/g.g4" afterDir="false" />
+    <list default="true" id="2ead7c13-53f7-4a54-aa36-8ca777811c86" name="Changes" comment="fix grammar">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +50,16 @@
       <workItem from="1685298914445" duration="51000" />
       <workItem from="1685298977824" duration="6105000" />
       <workItem from="1685305155045" duration="8069000" />
+      <workItem from="1685375622264" duration="639000" />
     </task>
+    <task id="LOCAL-00001" summary="fix grammar">
+      <created>1685375751813</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1685375751813</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -84,5 +87,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix grammar" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix grammar" />
   </component>
 </project>
