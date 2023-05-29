@@ -61,7 +61,7 @@
 | TraitMember      | `traitDef` &#124; `def`                                                                                                 |
 | ParameterList    | `LPAREN parameter (COMMA parameter)* RPAREN` &#124; `LPAREN RPAREN`                                                     |
 | Parameter        | `IDENTIFIER COLON IDENTIFIER`                                                                                           |
-| ReturnType       | `COLON IDENTIFIER` &#124; *epsilon*                                                                                     |
+| ReturnType       | `COLON IDENTIFIER` &#124; `*epsilon*`                                                                                     |
 | DefBlock         | `LBRACE statement* returnVal? RBRACE`                                                                                   |
 | Block            | `LBRACE statement* RBRACE`                                                                                              |
 | ReturnVal        | `RETURN expressionStatement`                                                                                            |
