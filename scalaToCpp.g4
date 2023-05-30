@@ -1,4 +1,4 @@
-grammar g;
+grammar scalaToCpp;
 
 //tokens
 CLASS:	        'class';
