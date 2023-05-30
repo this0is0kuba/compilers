@@ -12,6 +12,13 @@ public class scalaToCpp {
     private static class CustomListener extends scalaToCppBaseListener {
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
+            // get every token that is of type identifier
+            List<TerminalNode> identifiers = ctx.getTokens(scalaToCppParser.IDENTIFIER);
+            if(identifiers.size() > 0) {
+                for( TerminalNode identifier : identifiers) {
+                    System.out.println("    Found identifier: " + identifier.getText());
+                }
+            }
             // get the token type of the current rule
             int tokenType = ctx.getRuleIndex();
             // get the name of the token
