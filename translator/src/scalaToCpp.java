@@ -12,15 +12,22 @@ public class scalaToCpp {
     private static class CustomListener extends scalaToCppBaseListener {
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
-            String tokenText = ctx.getText();
-            System.out.println("Token Text: " + tokenText);
+            // get the token type of the current rule
+            int tokenType = ctx.getRuleIndex();
+            // get the name of the token
+            String tokenName = scalaToCppParser.ruleNames[tokenType];
+            // get the token content (only current rule)
+            String tokenContent = ctx.getText();
+
+            // print the token
+            System.out.println("Token: " + tokenName + " - " + tokenContent);
         }
     }
 
     void doStuff(){
         CharStream input = null;
         try {
-            input = CharStreams.fromFileName("/Users/reczkok/Kompilatory/compilers/translator/src/test.scala");
+            input = CharStreams.fromFileName("translator/src/test.scala");
         } catch (IOException e) {
             e.printStackTrace();
         }
