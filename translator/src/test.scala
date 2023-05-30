@@ -1,3 +1,6 @@
-class Siema{
-    def funkcja() = {val x = 1;}
+class Class{
+    def funkcja(arg : list) = {
+    val x = 1;
+    return x;
+    }
 }
