@@ -20,7 +20,20 @@ public class scalaToCpp {
             String tokenContent = ctx.getText();
 
             // print the token
-            System.out.println("Token: " + tokenName + " - " + tokenContent);
+            System.out.println("Entering   " +  "Token: " + tokenName + " - " + tokenContent);
+        }
+
+        @Override
+        public void exitEveryRule(ParserRuleContext ctx) {
+            // get the token type of the current rule
+            int tokenType = ctx.getRuleIndex();
+            // get the name of the token
+            String tokenName = scalaToCppParser.ruleNames[tokenType];
+            // get the token content (only current rule)
+            String tokenContent = ctx.getText();
+
+            // print the token
+            System.out.println("Exiting    " +"Token: " + tokenName + " - " + tokenContent);
         }
     }
 
