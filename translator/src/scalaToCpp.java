@@ -16,23 +16,17 @@ public class scalaToCpp {
             for(int i = 0; i < indent_level; i++) {
                 System.out.print("  |  ");
             }
-            // make an indentation based on the amount of children
             indent_level += 1;
-            // get every token that is of type identifier
-            // get the token type of the current rule
             int tokenType = ctx.getRuleIndex();
-            // get the name of the token
             String tokenName = scalaToCppParser.ruleNames[tokenType];
-            // get the token content (only current rule)
             String tokenContent = ctx.getText();
 
-            // print the token
             System.out.print("Entering   " +  "Token: " + tokenName + " - " + tokenContent + "  ");
 
             List<TerminalNode> identifiers = ctx.getTokens(scalaToCppParser.IDENTIFIER);
             if(identifiers.size() > 0) {
                 for( TerminalNode identifier : identifiers) {
-                    System.out.print("Found identifier: " + identifier.getText());
+                    System.out.print("!Found identifier: " + identifier.getText() + "  ");
                 }
             }
             System.out.println();
@@ -44,11 +38,8 @@ public class scalaToCpp {
             for(int i = 0; i < indent_level; i++) {
                 System.out.print("  |  ");
             }
-            // get the token type of the current rule
             int tokenType = ctx.getRuleIndex();
-            // get the name of the token
             String tokenName = scalaToCppParser.ruleNames[tokenType];
-            // signal that we are exiting the token
             System.out.println("Exiting    " +  "Token: " + tokenName);
         }
     }

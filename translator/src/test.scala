@@ -1,5 +1,5 @@
 class Class{
-    def funkcja(arg : list) = {
+    def funkcja(arg : Int) = {
     val x = 1;
     return x;
     }
