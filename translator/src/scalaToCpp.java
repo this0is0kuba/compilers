@@ -44,7 +44,7 @@ public class scalaToCpp {
         }
     }
 
-    void doStuff(){
+    void processFile(){
         CharStream input = null;
         try {
             input = CharStreams.fromFileName("translator/src/test.scala");
