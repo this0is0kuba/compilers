@@ -66,7 +66,7 @@
 | Block            | `LBRACE statement* RBRACE`                                                                                              |
 | ReturnVal        | `RETURN expressionStatement`                                                                                            |
 | Statement        | `block` &#124; `ifStatement` &#124; `whileStatement` &#124; `forStatement` &#124; `expressionStatement`                 |
-| IfStatement      | `IF LPAREN logicExpression RPAREN (block &#124; statement) (ELSE (block &#124; statement))?`                            |
+| IfStatement      | `IF LPAREN logicExpression RPAREN (block \| statement) (ELSE (block \| statement))?`                            |
 | WhileStatement   | `WHILE LPAREN logicExpression RPAREN block`                                                                             |
 | ForStatement     | `FOR LPAREN logicExpression RPAREN block`                                                                               |
 | Enumeration      | `IDENTIFIER ARROW expression`                                                                                           |
@@ -76,9 +76,9 @@
 | FunctionCall     | `IDENTIFIER argumentList`                                                                                               |
 | ObjectMethodAccess | `IDENTIFIER DOT IDENTIFIER argumentList?`                                                                               |
 | ArgumentList     | `LPAREN (expression (COMMA expression)*)? RPAREN`                                                                       |
-| Definition       | `(VAR &#124; VAL) IDENTIFIER`                                                                                           |
-| Assignment       | `(VAR &#124; VAL) IDENTIFIER EQ (operation &#124; creation)`                                                            |
-| Operation        | `(IDENTIFIER &#124; literal) (simpleOperator (IDENTIFIER &#124; literal))*`                                             |
+| Definition       | `(VAR \| VAL) IDENTIFIER`                                                                                           |
+| Assignment       | `(VAR \| VAL) IDENTIFIER EQ (operation \| creation)`                                                            |
+| Operation        | `(IDENTIFIER \| literal) (simpleOperator (IDENTIFIER \| literal))*`                                             |
 | Creation         | `NEW functionCall`                                                                                                      |
 | BinaryOperator   | `EQEQ` &#124; `NEQ` &#124; `LT` &#124; `GT` &#124; `LTEQ` &#124; `GTEQ` &#124; `AND` &#124; `OR` &#124; `PRO`           |
 | UnaryOperator    | `PLUS` &#124; `MINUS` &#124; `BANG`                                                                                     |
