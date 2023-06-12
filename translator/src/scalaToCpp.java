@@ -144,13 +144,12 @@ public class scalaToCpp {
             parameter.append("\t".repeat(Math.max(0, indent_level)));
 
             List<TerminalNode> identifiers = ctx.getTokens(scalaToCppParser.IDENTIFIER);
-            parameter.append(identifiers.get(0).toString() + " : " + identifiers.get(1).toString());
+            parameter.append(identifiers.get(0).toString() + " " + identifiers.get(1).toString());
             writeToOutput(parameter.toString());
         }
 
         @Override
         public void exitParameter(scalaToCppParser.ParameterContext ctx) {}
-
     }
 
     void processFile(){
