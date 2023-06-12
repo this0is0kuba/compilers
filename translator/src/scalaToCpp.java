@@ -445,9 +445,6 @@ public class scalaToCpp {
         TypeListener listenerPrep = new TypeListener();
         walkerPrep.walk(listenerPrep, tree);
         types = listenerPrep.types;
-        for (String key : types.keySet()) {
-            System.out.println(key + " " + types.get(key));
-        }
         scalaToCppListener listener = null;
         try {
             listener = new ProdListener("translator/src/test.cpp");
