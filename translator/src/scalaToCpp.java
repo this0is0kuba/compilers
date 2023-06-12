@@ -1,5 +1,4 @@
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.CharStream.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -9,7 +8,8 @@ import java.util.List;
 
 
 public class scalaToCpp {
-    private static class CustomListener extends scalaToCppBaseListener {
+
+    private static class DebugListener extends scalaToCppBaseListener {
         private static int indent_level = 0;
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
@@ -44,6 +44,13 @@ public class scalaToCpp {
         }
     }
 
+    private static class ProdListener extends scalaToCppBaseListener{
+        @Override
+        public void enterClassDef(scalaToCppParser.ClassDefContext ctx) {
+            //TerminalNode accesModifier = ctx.getToken();
+        }
+    }
+
     void processFile(){
         CharStream input = null;
         try {
@@ -56,7 +63,7 @@ public class scalaToCpp {
         scalaToCppParser parser = new scalaToCppParser(tokens);
         ParseTree tree = parser.plure();
         ParseTreeWalker walker = new ParseTreeWalker();
-        scalaToCppListener listener = new CustomListener();
+        scalaToCppListener listener = new DebugListener();
         walker.walk(listener, tree);
     }
 

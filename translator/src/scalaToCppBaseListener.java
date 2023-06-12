@@ -52,6 +52,18 @@ public class scalaToCppBaseListener implements scalaToCppListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAccessModifier(scalaToCppParser.AccessModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAccessModifier(scalaToCppParser.AccessModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterObjectDef(scalaToCppParser.ObjectDefContext ctx) { }
 	/**
 	 * {@inheritDoc}

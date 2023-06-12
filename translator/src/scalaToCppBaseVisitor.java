@@ -38,6 +38,13 @@ public class scalaToCppBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitAccessModifier(scalaToCppParser.AccessModifierContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitObjectDef(scalaToCppParser.ObjectDefContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

@@ -28,6 +28,12 @@ public interface scalaToCppVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassDef(scalaToCppParser.ClassDefContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link scalaToCppParser#accessModifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAccessModifier(scalaToCppParser.AccessModifierContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link scalaToCppParser#objectDef}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -37,6 +37,16 @@ public interface scalaToCppListener extends ParseTreeListener {
 	 */
 	void exitClassDef(scalaToCppParser.ClassDefContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link scalaToCppParser#accessModifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterAccessModifier(scalaToCppParser.AccessModifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link scalaToCppParser#accessModifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitAccessModifier(scalaToCppParser.AccessModifierContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link scalaToCppParser#objectDef}.
 	 * @param ctx the parse tree
 	 */
