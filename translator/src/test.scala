@@ -1,6 +1,6 @@
 class Class{
-    def funkcja(arg : Int) = {
-    val x = 1;
+    def funkcja(arg : Int) : String = {
+    val x = "hehe";
     return x;
     }
 }

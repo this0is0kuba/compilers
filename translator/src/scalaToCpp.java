@@ -7,10 +7,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class scalaToCpp {
+
+    Map<String, String> types;
 
     private static class DebugListener extends scalaToCppBaseListener {
         private int indent_level = 0;
@@ -44,6 +48,54 @@ public class scalaToCpp {
             int tokenType = ctx.getRuleIndex();
             String tokenName = scalaToCppParser.ruleNames[tokenType];
             System.out.println("Exiting    " +  "Token: " + tokenName);
+        }
+    }
+
+    private static class TypeListener extends scalaToCppBaseListener {
+        Map<String, String> types = new HashMap<>();
+
+        @Override
+        public void enterDef(scalaToCppParser.DefContext ctx) {
+            String name = ctx.IDENTIFIER().getText();
+            String type = ctx.returnType().IDENTIFIER().getText();
+            types.put(name, type);
+        }
+
+        @Override
+        public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
+            String name = ctx.IDENTIFIER().getText();
+            if(ctx.operation() != null){
+                if(ctx.operation().IDENTIFIER().size() > 0) {
+                    String type = ctx.operation().IDENTIFIER(0).getText();
+                    types.put(name, type);
+                }else{
+                    if(ctx.operation().literal().size() > 0) {
+                        if(ctx.operation().literal().get(0).BOOLEAN_LITERAL() != null) {
+                            types.put(name, "Boolean");
+                        }else if(ctx.operation().literal().get(0).INT_LITERAL() != null) {
+                            types.put(name, "Int");
+                        }else if(ctx.operation().literal().get(0).STRING_LITERAL() != null) {
+                            types.put(name, "String");
+                        }
+                    }
+                }
+            }else if(ctx.creation() != null){
+                if(ctx.creation().NEW() != null){
+                    String type = ctx.creation().functionCall().IDENTIFIER().getText();
+                    types.put(name, type);
+                }else{
+                    String type = types.get(ctx.creation().functionCall().IDENTIFIER().toString());
+                    types.put(name, type);
+                }
+            }else{
+                if(ctx.listliteral().literal(0).INT_LITERAL() != null){
+                    types.put(name, "Vector<Int>");
+                }else if(ctx.listliteral().literal(0).STRING_LITERAL() != null){
+                    types.put(name, "Vector<String>");
+                }else if(ctx.listliteral().literal(0).BOOLEAN_LITERAL() != null){
+                    types.put(name, "Vector<Boolean>");
+                }
+            }
         }
     }
 
@@ -139,6 +191,10 @@ public class scalaToCpp {
             String traitDef = "\t".repeat(Math.max(0, indent_level)) +
                     "}\n";
             writeToOutput(traitDef);
+        }
+
+        @Override
+        public void enterDef(scalaToCppParser.DefContext ctx) {
         }
 
         @Override
@@ -384,7 +440,14 @@ public class scalaToCpp {
         TokenStream tokens = new CommonTokenStream(lexer);
         scalaToCppParser parser = new scalaToCppParser(tokens);
         ParseTree tree = parser.plure();
+        ParseTreeWalker walkerPrep = new ParseTreeWalker();
         ParseTreeWalker walker = new ParseTreeWalker();
+        TypeListener listenerPrep = new TypeListener();
+        walkerPrep.walk(listenerPrep, tree);
+        types = listenerPrep.types;
+        for (String key : types.keySet()) {
+            System.out.println(key + " " + types.get(key));
+        }
         scalaToCppListener listener = null;
         try {
             listener = new ProdListener("translator/src/test.cpp");
