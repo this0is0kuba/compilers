@@ -54,7 +54,7 @@ public class scalaToCpp {
         private File output;
 
         private void writeToOutput(String s){
-            writer.print(s);
+            writer.append(s);
         }
 
         public ProdListener(String path) throws IOException {
