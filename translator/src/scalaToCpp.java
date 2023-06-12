@@ -286,6 +286,49 @@ public class scalaToCpp {
 
         @Override
         public void exitParameter(scalaToCppParser.ParameterContext ctx) {}
+
+        @Override
+        public void enterDefBlock(scalaToCppParser.DefBlockContext ctx) {
+            StringBuilder defBlock = new StringBuilder();
+            defBlock.append("\t".repeat(Math.max(0, indent_level)) + "{\n");
+
+            writeToOutput(defBlock.toString());
+        }
+
+        @Override
+        public void exitDefBlock(scalaToCppParser.DefBlockContext ctx) {
+            StringBuilder defBlock = new StringBuilder();
+            defBlock.append("\t".repeat(Math.max(0, indent_level)) + "}");
+
+            writeToOutput(defBlock.toString());
+        }
+
+        @Override
+        public void enterBlock(scalaToCppParser.BlockContext ctx) {
+            StringBuilder block = new StringBuilder();
+            block.append("\t".repeat(Math.max(0, indent_level)) + "{\n");
+
+            writeToOutput(block.toString());
+        }
+
+        @Override
+        public void exitBlock(scalaToCppParser.BlockContext ctx) {
+            StringBuilder block = new StringBuilder();
+            block.append("\t".repeat(Math.max(0, indent_level)) + "}");
+
+            writeToOutput(block.toString());
+        }
+
+        @Override
+        public void enterReturnVal(scalaToCppParser.ReturnValContext ctx) {
+            StringBuilder block = new StringBuilder();
+            block.append("\t".repeat(Math.max(0, indent_level)) + "return ");
+        }
+
+        @Override
+        public void exitReturnVal(scalaToCppParser.ReturnValContext ctx) {}
+
+
     }
 
     void processFile(){
