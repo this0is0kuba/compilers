@@ -138,6 +138,18 @@ public class scalaToCpp {
             writeToOutput(" ");
         }
 
+        @Override
+        public void enterParameter(scalaToCppParser.ParameterContext ctx) {
+            StringBuilder parameter = new StringBuilder();
+            parameter.append("\t".repeat(Math.max(0, indent_level)));
+
+            List<TerminalNode> identifiers = ctx.getTokens(scalaToCppParser.IDENTIFIER);
+            parameter.append(identifiers.get(0).toString() + ":" + identifiers.get(1).toString());
+        }
+
+        @Override
+        public void exitParameter(scalaToCppParser.ParameterContext ctx) {}
+
     }
 
     void processFile(){
@@ -160,5 +172,4 @@ public class scalaToCpp {
             e.printStackTrace();
         }
     }
-
 }
