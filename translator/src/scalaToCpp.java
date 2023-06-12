@@ -427,9 +427,26 @@ public class scalaToCpp {
         public void enterIfStatement(scalaToCppParser.IfStatementContext ctx) {
             StringBuilder ifStatmenet = new StringBuilder();
             ifStatmenet.append("\t".repeat(Math.max(0, indent_level)));
-            ifStatmenet.append("if (" + ctx.logicExpression().getText() + ")");
+            ifStatmenet.append("if (" + ctx.logicExpression().getText() + ")\n");
 
-            writeToOutput("");
+            writeToOutput(ifStatmenet.toString());
+        }
+
+        @Override
+        public void enterElseStatement(scalaToCppParser.ElseStatementContext ctx) {
+            StringBuilder elseStatmenet = new StringBuilder();
+            elseStatmenet.append("\t".repeat(Math.max(0, indent_level)) + "else\n");
+
+            writeToOutput(elseStatmenet.toString());
+        }
+
+        @Override
+        public void enterWhileStatement(scalaToCppParser.WhileStatementContext ctx) {
+            StringBuilder whileStatmenet = new StringBuilder();
+            whileStatmenet.append("\t".repeat(Math.max(0, indent_level)));
+            whileStatmenet.append("while (" + ctx.logicExpression().getText() + ")\n");
+
+            writeToOutput(whileStatmenet.toString());
         }
     }
 
