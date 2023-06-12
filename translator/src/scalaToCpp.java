@@ -321,14 +321,12 @@ public class scalaToCpp {
 
         @Override
         public void enterReturnVal(scalaToCppParser.ReturnValContext ctx) {
-            StringBuilder block = new StringBuilder();
-            block.append("\t".repeat(Math.max(0, indent_level)) + "return ");
+            StringBuilder returnVal = new StringBuilder();
+            returnVal.append("\t".repeat(Math.max(0, indent_level)) + "return ");
         }
 
         @Override
         public void exitReturnVal(scalaToCppParser.ReturnValContext ctx) {}
-
-
     }
 
     void processFile(){
