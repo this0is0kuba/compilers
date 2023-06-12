@@ -57,14 +57,17 @@ public class scalaToCpp {
             writer.print(s);
         }
 
-        public ProdListener(String path) throws FileNotFoundException {
+        public ProdListener(String path) throws IOException {
             this.path = path;
-            this.output = new File(path);
+            output = new File(path);
             writer = new PrintWriter(this.output);
+            if(!output.createNewFile()) writer.print("");
         }
-        public ProdListener(File file) throws FileNotFoundException {
+
+        public ProdListener(File file) throws IOException {
             this.output = file;
             writer = new PrintWriter(this.output);
+            if(!output.createNewFile()) writer.print("");
         }
 
         @Override
