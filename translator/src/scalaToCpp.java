@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class scalaToCpp {
 
-    Map<String, String> types;
+    public Map<String, String> types;
 
     private static class DebugListener extends scalaToCppBaseListener {
         private int indent_level = 0;
@@ -143,6 +143,11 @@ public class scalaToCpp {
         public void enterClassDef(scalaToCppParser.ClassDefContext ctx) {
             StringBuilder classDef = new StringBuilder();
             classDef.append("\t".repeat(Math.max(0, indent_level)));
+            // check if access modifier is present
+            if(ctx.accessModifier() != null){
+                classDef.append(ctx.accessModifier().getText());
+                classDef.append(" ");
+            }
             classDef.append("class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
             writeToOutput(classDef.toString());
         }
@@ -155,18 +160,13 @@ public class scalaToCpp {
         }
 
         @Override
-        public void enterAccessModifier(scalaToCppParser.AccessModifierContext ctx) {
-            writeToOutput("\t".repeat(Math.max(0, indent_level)) + ctx.getText() + ":\n");
-        }
-
-        @Override
-        public void exitAccessModifier(scalaToCppParser.AccessModifierContext ctx) {
-        }
-
-        @Override
         public void enterObjectDef(scalaToCppParser.ObjectDefContext ctx) {
             StringBuilder objectDef = new StringBuilder();
             objectDef.append("\t".repeat(Math.max(0, indent_level)));
+            if(ctx.accessModifier() != null){
+                objectDef.append(ctx.accessModifier().getText());
+                objectDef.append(" ");
+            }
             objectDef.append("class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
             writeToOutput(objectDef.toString());
         }
@@ -182,6 +182,10 @@ public class scalaToCpp {
         public void enterTraitDef(scalaToCppParser.TraitDefContext ctx) {
             StringBuilder traitDef = new StringBuilder();
             traitDef.append("\t".repeat(Math.max(0, indent_level)));
+            if(ctx.accessModifier() != null){
+                traitDef.append(ctx.accessModifier().getText());
+                traitDef.append(" ");
+            }
             traitDef.append("abstract class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
             writeToOutput(traitDef.toString());
         }
