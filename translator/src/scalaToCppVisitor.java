@@ -1,4 +1,4 @@
-// Generated from /Users/reczkok/Kompilatory/compilers/scalaToCpp.g4 by ANTLR 4.12.0
+// Generated from C:/Users/Kuba/IdeaProjects/compilers\scalaToCpp.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -123,6 +123,12 @@ public interface scalaToCppVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIfStatement(scalaToCppParser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link scalaToCppParser#elseStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElseStatement(scalaToCppParser.ElseStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link scalaToCppParser#whileStatement}.
 	 * @param ctx the parse tree

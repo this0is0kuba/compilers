@@ -1,4 +1,4 @@
-// Generated from /Users/reczkok/Kompilatory/compilers/scalaToCpp.g4 by ANTLR 4.12.0
+// Generated from C:/Users/Kuba/IdeaProjects/compilers\scalaToCpp.g4 by ANTLR 4.12.0
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -239,6 +239,18 @@ public class scalaToCppBaseListener implements scalaToCppListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfStatement(scalaToCppParser.IfStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterElseStatement(scalaToCppParser.ElseStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitElseStatement(scalaToCppParser.ElseStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

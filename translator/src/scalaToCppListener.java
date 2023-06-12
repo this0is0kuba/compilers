@@ -1,4 +1,4 @@
-// Generated from /Users/reczkok/Kompilatory/compilers/scalaToCpp.g4 by ANTLR 4.12.0
+// Generated from C:/Users/Kuba/IdeaProjects/compilers\scalaToCpp.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -196,6 +196,16 @@ public interface scalaToCppListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfStatement(scalaToCppParser.IfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link scalaToCppParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseStatement(scalaToCppParser.ElseStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link scalaToCppParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseStatement(scalaToCppParser.ElseStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link scalaToCppParser#whileStatement}.
 	 * @param ctx the parse tree
