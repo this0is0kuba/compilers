@@ -104,6 +104,40 @@ public class scalaToCpp {
                     "};\n";
             writeToOutput(classDef);
         }
+
+        @Override
+        public void enterExpression(scalaToCppParser.ExpressionContext ctx) {
+            String expression = ctx.getText();
+            writeToOutput(expression);
+        }
+        @Override
+        public void exitExpression(scalaToCppParser.ExpressionContext ctx) {
+            writeToOutput(" ");
+        }
+
+        @Override
+        public void enterFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
+            StringBuilder functionCall = new StringBuilder();
+            functionCall.append("\t".repeat(Math.max(0, indent_level)));
+            functionCall.append(ctx.IDENTIFIER().getText());
+            writeToOutput(functionCall.toString());
+        }
+        @Override
+        public void exitFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
+            writeToOutput(";\n");
+        }
+
+        @Override
+        public void enterLiteral(scalaToCppParser.LiteralContext ctx) {
+            String literal = ctx.getText();
+            writeToOutput(literal);
+        }
+
+        @Override
+        public void exitLiteral(scalaToCppParser.LiteralContext ctx) {
+            writeToOutput(" ");
+        }
+
     }
 
     void processFile(){
