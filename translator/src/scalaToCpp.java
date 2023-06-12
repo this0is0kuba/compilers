@@ -98,7 +98,7 @@ public class scalaToCpp {
         @Override
         public void exitClassDef(scalaToCppParser.ClassDefContext ctx) {
             String classDef = "\t".repeat(Math.max(0, indent_level)) +
-                    "};\n";
+                    "}\n";
             writeToOutput(classDef);
         }
 
@@ -109,6 +109,21 @@ public class scalaToCpp {
 
         @Override
         public void exitAccessModifier(scalaToCppParser.AccessModifierContext ctx) {
+        }
+
+        @Override
+        public void enterObjectDef(scalaToCppParser.ObjectDefContext ctx) {
+            StringBuilder objectDef = new StringBuilder();
+            objectDef.append("\t".repeat(Math.max(0, indent_level)));
+            objectDef.append("abstract class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
+            writeToOutput(objectDef.toString());
+        }
+
+        @Override
+        public void exitObjectDef(scalaToCppParser.ObjectDefContext ctx) {
+            String objectDef = "\t".repeat(Math.max(0, indent_level)) +
+                    "}\n";
+            writeToOutput(objectDef);
         }
 
         @Override
