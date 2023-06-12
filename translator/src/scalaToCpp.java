@@ -143,8 +143,9 @@ public class scalaToCpp {
 
         @Override
         public void enterExpression(scalaToCppParser.ExpressionContext ctx) {
-            String expression = ctx.getText();
-            writeToOutput(expression);
+            if(ctx.IDENTIFIER() != null){
+                writeToOutput(ctx.IDENTIFIER().getText());
+            }
         }
 
         @Override
@@ -154,13 +155,111 @@ public class scalaToCpp {
 
         @Override
         public void enterFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
-            StringBuilder functionCall = new StringBuilder();
-            functionCall.append("\t".repeat(Math.max(0, indent_level)));
-            functionCall.append(ctx.IDENTIFIER().getText());
-            writeToOutput(functionCall.toString());
+            String functionCall = "\t".repeat(Math.max(0, indent_level)) +
+                    ctx.IDENTIFIER().getText();
+            writeToOutput(functionCall);
         }
         @Override
         public void exitFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
+            writeToOutput(";\n");
+        }
+        @Override
+        public void enterObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
+            StringBuilder objectMethodAccess = new StringBuilder();
+            objectMethodAccess.append("\t".repeat(Math.max(0, indent_level)));
+            objectMethodAccess.append(ctx.IDENTIFIER().get(0).getText()).append(".").append(ctx.IDENTIFIER().get(1).getText());
+            if(ctx.argumentList() != null){
+                objectMethodAccess.append(ctx.argumentList().getText());
+            }
+            else{
+                objectMethodAccess.append("()");
+            }
+            writeToOutput(objectMethodAccess.toString());
+        }
+
+        @Override
+        public void exitObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
+            writeToOutput(";\n");
+        }
+        @Override
+        public void enterArgumentList(scalaToCppParser.ArgumentListContext ctx) {
+            writeToOutput("(");
+            StringBuilder argumentList = new StringBuilder();
+            for(int i = 0; i < ctx.expression().size(); i++){
+                argumentList.append(ctx.expression(i).getText());
+                if(i != ctx.expression().size() - 1){
+                    argumentList.append(", ");
+                }
+            }
+            writeToOutput(argumentList.toString());
+        }
+        @Override
+        public void exitArgumentList(scalaToCppParser.ArgumentListContext ctx) {
+            writeToOutput(")");
+        }
+        @Override
+        public void enterDefinition(scalaToCppParser.DefinitionContext ctx) {
+            StringBuilder definition = new StringBuilder();
+            definition.append("\t".repeat(Math.max(0, indent_level)));
+            definition = definition.append("void*").append(ctx.IDENTIFIER().getText());
+            // !!!!!!!!!!!!!!!!!! TODO: add type
+            writeToOutput(definition.toString());
+        }
+        @Override
+        public void exitDefinition(scalaToCppParser.DefinitionContext ctx) {
+            writeToOutput(";\n");
+        }
+        @Override
+        public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
+            StringBuilder assignment = new StringBuilder();
+            assignment.append("\t".repeat(Math.max(0, indent_level)));
+            assignment.append(ctx.IDENTIFIER().getText()).append(" = ");
+            if(ctx.operation() != null){
+                assignment.append(ctx.operation().getText());
+            }
+            if(ctx.creation() != null){
+                assignment.append(ctx.creation().getText());
+            }
+            if(ctx.listliteral() != null){
+                assignment.append(ctx.listliteral().getText());
+            }
+            writeToOutput(assignment.toString());
+        }
+        @Override
+        public void exitAssignment(scalaToCppParser.AssignmentContext ctx) {
+            writeToOutput(";\n");
+        }
+        @Override
+        public void enterListliteral(scalaToCppParser.ListliteralContext ctx) {
+            StringBuilder listliteral = new StringBuilder();
+            listliteral.append("\t".repeat(Math.max(0, indent_level)));
+            listliteral.append("vector<");
+            if(ctx.literal().get(0) != null){
+                if(ctx.literal().get(0).INT_LITERAL() != null){
+                    listliteral.append("int");
+                }
+                if(ctx.literal().get(0).STRING_LITERAL() != null){
+                    listliteral.append("string");
+                }
+                if(ctx.literal().get(0).BOOLEAN_LITERAL() != null){
+                    listliteral.append("bool");
+                }
+            }
+            // !!!!!!!!!!!!!!!!!! TODO: add functions type
+            listliteral.append(">");
+        }
+        @Override
+        public void exitListliteral(scalaToCppParser.ListliteralContext ctx) {
+            writeToOutput(";\n");
+        }
+        @Override
+        public void enterCreation(scalaToCppParser.CreationContext ctx) {
+            String creation = "\t".repeat(Math.max(0, indent_level)) +
+                    "new ";
+            writeToOutput(creation);
+        }
+        @Override
+        public void exitCreation(scalaToCppParser.CreationContext ctx) {
             writeToOutput(";\n");
         }
 
