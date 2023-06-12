@@ -444,7 +444,18 @@ public class scalaToCpp {
         ParseTreeWalker walker = new ParseTreeWalker();
         TypeListener listenerPrep = new TypeListener();
         walkerPrep.walk(listenerPrep, tree);
+
         types = listenerPrep.types;
+        for (Map.Entry<String, String> entry : types.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            switch (value) {
+                case "Int" -> types.put(key, "int");
+                case "Boolean" -> types.put(key, "bool");
+                case "String" -> types.put(key, "string");
+            }
+        }
+
         scalaToCppListener listener = null;
         try {
             listener = new ProdListener("translator/src/test.cpp");
