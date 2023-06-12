@@ -3,14 +3,17 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 
 public class scalaToCpp {
 
     private static class DebugListener extends scalaToCppBaseListener {
-        private static int indent_level = 0;
+        private int indent_level = 0;
         @Override
         public void enterEveryRule(ParserRuleContext ctx) {
             for(int i = 0; i < indent_level; i++) {
@@ -45,9 +48,33 @@ public class scalaToCpp {
     }
 
     private static class ProdListener extends scalaToCppBaseListener{
+        private int indent_level = 0;
+        private final PrintWriter writer;
+        private String path;
+        private File output;
+
+        private void writeToOutput(String s){
+            writer.print(s);
+        }
+
+        public ProdListener(String path) throws FileNotFoundException {
+            this.path = path;
+            this.output = new File(path);
+            writer = new PrintWriter(this.output);
+        }
+        public ProdListener(File file) throws FileNotFoundException {
+            this.output = file;
+            writer = new PrintWriter(this.output);
+        }
+
         @Override
-        public void enterClassDef(scalaToCppParser.ClassDefContext ctx) {
-            //TerminalNode accesModifier = ctx.getToken();
+        public void enterEveryRule(ParserRuleContext ctx){
+            indent_level += 1;
+        }
+
+        @Override
+        public void exitEveryRule(ParserRuleContext ctx){
+            indent_level -= 1;
         }
     }
 
