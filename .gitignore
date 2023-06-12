@@ -33,3 +33,6 @@ gen/
 
 ### .idea ###
 .idea/
+
+### output files ###
+/translator/src/test.cpp

@@ -73,11 +73,18 @@ public class scalaToCpp {
         @Override
         public void enterEveryRule(ParserRuleContext ctx){
             indent_level += 1;
+            int tokenType = ctx.getRuleIndex();
+            writeToOutput(String.valueOf(tokenType));
         }
 
         @Override
         public void exitEveryRule(ParserRuleContext ctx){
             indent_level -= 1;
+        }
+
+        @Override
+        public void exitPlure(scalaToCppParser.PlureContext ctx) {
+            writer.close();
         }
     }
 
@@ -93,8 +100,13 @@ public class scalaToCpp {
         scalaToCppParser parser = new scalaToCppParser(tokens);
         ParseTree tree = parser.plure();
         ParseTreeWalker walker = new ParseTreeWalker();
-        scalaToCppListener listener = new DebugListener();
-        walker.walk(listener, tree);
+        scalaToCppListener listener = null;
+        try {
+            listener = new ProdListener("translator/src/test.cpp");
+            walker.walk(listener, tree);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
