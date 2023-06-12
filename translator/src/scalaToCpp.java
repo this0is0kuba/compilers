@@ -253,6 +253,23 @@ public class scalaToCpp {
             writeToOutput(";\n");
         }
         @Override
+        public void enterOperation(scalaToCppParser.OperationContext ctx) {
+            StringBuilder operation = new StringBuilder();
+
+            for(int i = 0; i < ctx.IDENTIFIER().size(); i++){
+                operation.append(ctx.IDENTIFIER(i).getText());
+                if(i != ctx.IDENTIFIER().size() - 1){
+                    operation.append(" ").append(ctx.simpleOperator(i).getText()).append(" ");
+                }
+            }
+            writeToOutput(operation.toString());
+        }
+        @Override
+        public void exitOperation(scalaToCppParser.OperationContext ctx) {
+            writeToOutput(";\n");
+        }
+
+        @Override
         public void enterCreation(scalaToCppParser.CreationContext ctx) {
             String creation = "\t".repeat(Math.max(0, indent_level)) +
                     "new ";
@@ -262,6 +279,22 @@ public class scalaToCpp {
         public void exitCreation(scalaToCppParser.CreationContext ctx) {
             writeToOutput(";\n");
         }
+        @Override
+        public void enterBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {
+            writeToOutput(ctx.getText());
+        }
+        @Override public void exitBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {}
+
+        @Override
+        public void enterUnaryOperator(scalaToCppParser.UnaryOperatorContext ctx) {
+            writeToOutput(ctx.getText());
+        }
+        @Override public void exitUnaryOperator(scalaToCppParser.UnaryOperatorContext ctx) {}
+        @Override
+        public void enterSimpleOperator(scalaToCppParser.SimpleOperatorContext ctx) {
+            writeToOutput(ctx.getText());
+        }
+        @Override public void exitSimpleOperator(scalaToCppParser.SimpleOperatorContext ctx) {}
 
         @Override
         public void enterLiteral(scalaToCppParser.LiteralContext ctx) {
