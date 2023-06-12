@@ -81,7 +81,7 @@ definition: (VAR | VAL |) IDENTIFIER;
 assignment: (VAR | VAL |) IDENTIFIER EQ (operation | creation | listliteral);
 listliteral: LIST LPAREN ((literal|creation|functionCall) (COMMA (literal|creation|functionCall))*)? RPAREN;
 operation: (IDENTIFIER | literal) (simpleOperator (IDENTIFIER | literal))*;
-creation: NEW functionCall;
+creation: NEW? functionCall;
 binaryOperator:	EQEQ | NEQ | LT | GT | LTEQ | GTEQ | AND | OR | PRO;
 unaryOperator:	PLUS | MINUS | BANG;
 simpleOperator: PLUS | MINUS | ASTERISK | SLASH;

@@ -356,10 +356,21 @@ public class scalaToCpp {
         public void enterReturnVal(scalaToCppParser.ReturnValContext ctx) {
             StringBuilder returnVal = new StringBuilder();
             returnVal.append("\t".repeat(Math.max(0, indent_level)) + "return ");
+
+            writeToOutput(returnVal.toString());
         }
 
         @Override
         public void exitReturnVal(scalaToCppParser.ReturnValContext ctx) {}
+
+        @Override
+        public void enterIfStatement(scalaToCppParser.IfStatementContext ctx) {
+            StringBuilder ifStatmenet = new StringBuilder();
+            ifStatmenet.append("\t".repeat(Math.max(0, indent_level)));
+            ifStatmenet.append("if (" + ctx.logicExpression().getText() + ")");
+
+            writeToOutput("");
+        }
     }
 
     void processFile(){
