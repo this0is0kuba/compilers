@@ -91,9 +91,6 @@ public class scalaToCpp {
         public void enterClassDef(scalaToCppParser.ClassDefContext ctx) {
             StringBuilder classDef = new StringBuilder();
             classDef.append("\t".repeat(Math.max(0, indent_level)));
-            if(ctx.accessModifier() != null) {
-                classDef.append(ctx.accessModifier().getText()).append(" ");
-            }
             classDef.append("class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
             writeToOutput(classDef.toString());
         }
