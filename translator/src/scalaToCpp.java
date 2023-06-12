@@ -103,10 +103,20 @@ public class scalaToCpp {
         }
 
         @Override
+        public void enterAccessModifier(scalaToCppParser.AccessModifierContext ctx) {
+            writeToOutput("\t".repeat(Math.max(0, indent_level)) + ctx.getText() + ":\n");
+        }
+
+        @Override
+        public void exitAccessModifier(scalaToCppParser.AccessModifierContext ctx) {
+        }
+
+        @Override
         public void enterExpression(scalaToCppParser.ExpressionContext ctx) {
             String expression = ctx.getText();
             writeToOutput(expression);
         }
+
         @Override
         public void exitExpression(scalaToCppParser.ExpressionContext ctx) {
             writeToOutput(" ");
