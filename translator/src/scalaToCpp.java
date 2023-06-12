@@ -130,8 +130,15 @@ public class scalaToCpp {
         public void enterTraitDef(scalaToCppParser.TraitDefContext ctx) {
             StringBuilder traitDef = new StringBuilder();
             traitDef.append("\t".repeat(Math.max(0, indent_level)));
-            traitDef.append("class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
+            traitDef.append("abstract class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
             writeToOutput(traitDef.toString());
+        }
+
+        @Override
+        public void exitTraitDef(scalaToCppParser.TraitDefContext ctx) {
+            String traitDef = "\t".repeat(Math.max(0, indent_level)) +
+                    "}\n";
+            writeToOutput(traitDef);
         }
 
         @Override
