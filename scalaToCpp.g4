@@ -69,7 +69,7 @@ statement:	block | ifStatement | whileStatement | forStatement | expressionState
 ifStatement:	IF LPAREN logicExpression RPAREN (block | statement) elseStatement?;
 elseStatement: ELSE (block | statement);
 whileStatement:	WHILE LPAREN logicExpression RPAREN block;
-forStatement:	FOR LPAREN (logicExpression|enumeration) RPAREN block;
+forStatement:	FOR LPAREN (enumeration) RPAREN block;
 enumeration:	IDENTIFIER ARROW (expression|listliteral);
 expressionStatement:    expression SEMICOLON;
 logicExpression: expression binaryOperator expression | unaryOperator expression | LPAREN expression RPAREN;
