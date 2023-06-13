@@ -566,7 +566,9 @@ public class scalaToCpp {
         }
 
         @Override
-        public void enterExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {}
+        public void enterExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {
+            writeToOutput("\t".repeat(Math.max(0, indent_level)));
+        }
 
         @Override
         public void exitExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {
