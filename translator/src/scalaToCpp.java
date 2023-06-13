@@ -464,7 +464,7 @@ public class scalaToCpp {
         public void enterDefBlock(scalaToCppParser.DefBlockContext ctx) {
             StringBuilder defBlock = new StringBuilder();
             defBlock.append("\t".repeat(Math.max(0, indent_level)) + "{\n");
-
+            indent_level++;
             writeToOutput(defBlock.toString());
         }
 
@@ -472,7 +472,7 @@ public class scalaToCpp {
         public void exitDefBlock(scalaToCppParser.DefBlockContext ctx) {
             StringBuilder defBlock = new StringBuilder();
             defBlock.append("\t".repeat(Math.max(0, indent_level)) + "}");
-
+            indent_level--;
             writeToOutput(defBlock.toString());
         }
 
