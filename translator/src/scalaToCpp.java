@@ -580,7 +580,7 @@ public class scalaToCpp {
         @Override
         public void exitEnumeration(scalaToCppParser.EnumerationContext ctx) {
             StringBuilder enumeration = new StringBuilder();
-            enumeration.append(" )");
+            enumeration.append(" )\n");
 
             writeToOutput(enumeration.toString());
         }
