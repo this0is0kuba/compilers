@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class scalaToCpp {
 
-    public Map<String, String> types;
+    public static Map<String, String> types;
 
     private static class DebugListener extends scalaToCppBaseListener {
         private int indent_level = 0;
