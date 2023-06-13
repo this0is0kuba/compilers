@@ -303,9 +303,7 @@ public class scalaToCpp {
 
         @Override
         public void enterFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
-            String functionCall = "\t".repeat(Math.max(0, indent_level)) +
-                    ctx.IDENTIFIER().getText();
-            writeToOutput(functionCall);
+            writeToOutput(ctx.IDENTIFIER().getText());
         }
 
         @Override
@@ -360,7 +358,7 @@ public class scalaToCpp {
 
         @Override
         public void exitDefinition(scalaToCppParser.DefinitionContext ctx) {
-            writeToOutput(";\n");
+            writeToOutput("");
         }
 
         @Override
@@ -378,7 +376,7 @@ public class scalaToCpp {
 
         @Override
         public void exitAssignment(scalaToCppParser.AssignmentContext ctx) {
-            writeToOutput(";\n");
+            writeToOutput("");
         }
 
         @Override
@@ -418,9 +416,7 @@ public class scalaToCpp {
 
         @Override
         public void enterCreation(scalaToCppParser.CreationContext ctx) {
-            String creation = "\t".repeat(Math.max(0, indent_level)) +
-                    "new ";
-            writeToOutput(creation);
+            writeToOutput("new ");
         }
 
         @Override
@@ -577,7 +573,7 @@ public class scalaToCpp {
         @Override
         public void exitExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {
             StringBuilder expressionStatement = new StringBuilder();
-            expressionStatement.append(";");
+            expressionStatement.append(";\n");
 
             writeToOutput(expressionStatement.toString());
         }
