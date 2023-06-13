@@ -457,11 +457,6 @@ public class scalaToCpp {
 
         @Override
         public void enterParameter(scalaToCppParser.ParameterContext ctx) {
-            StringBuilder parameter = new StringBuilder();
-
-            List<TerminalNode> identifiers = ctx.getTokens(scalaToCppParser.IDENTIFIER);
-            parameter.append(identifiers.get(0).toString() + " " + identifiers.get(1).toString());
-            writeToOutput(parameter.toString());
         }
 
         @Override
