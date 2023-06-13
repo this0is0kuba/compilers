@@ -247,6 +247,16 @@ public interface scalaToCppListener extends ParseTreeListener {
 	 */
 	void exitExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link scalaToCppParser#printStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintStatement(scalaToCppParser.PrintStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link scalaToCppParser#printStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintStatement(scalaToCppParser.PrintStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link scalaToCppParser#logicExpression}.
 	 * @param ctx the parse tree
 	 */

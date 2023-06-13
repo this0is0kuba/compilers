@@ -304,6 +304,18 @@ public class scalaToCppBaseListener implements scalaToCppListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrintStatement(scalaToCppParser.PrintStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintStatement(scalaToCppParser.PrintStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLogicExpression(scalaToCppParser.LogicExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

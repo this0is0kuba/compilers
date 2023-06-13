@@ -154,6 +154,12 @@ public interface scalaToCppVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link scalaToCppParser#printStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintStatement(scalaToCppParser.PrintStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link scalaToCppParser#logicExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
