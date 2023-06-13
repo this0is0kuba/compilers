@@ -600,17 +600,19 @@ public class scalaToCpp {
         @Override
         public void enterPrintStatement(scalaToCppParser.PrintStatementContext ctx) {
             StringBuilder printStatement = new StringBuilder();
-            printStatement.append("\t".repeat(Math.max(0, indent_level)));
-            printStatement.append("std::cout << ");
+            printStatement.append("cout << ");
 
             writeToOutput(printStatement.toString());
         }
+        @Override
         public void exitPrintStatement(scalaToCppParser.PrintStatementContext ctx) {
-            StringBuilder printStatement = new StringBuilder();
-            printStatement.append(" << std::endl");
-
-            writeToOutput(printStatement.toString());
+            writeToOutput(" << endl");
         }
+        @Override
+        public void enterPrintListElement(scalaToCppParser.PrintListElementContext ctx) {
+            writeToOutput(" << ");
+        }
+
 
     }
 

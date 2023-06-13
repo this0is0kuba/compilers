@@ -15,7 +15,7 @@ private class Class{
         val ranklist = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         for( rank <- ranklist){
-            println("Author rank is : ");
+            println("Author rank is : " + "xd");
         }
 
         return x;
