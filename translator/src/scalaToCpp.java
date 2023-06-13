@@ -65,6 +65,17 @@ public class scalaToCpp {
         }
 
         @Override
+        public void enterParameter(scalaToCppParser.ParameterContext ctx) {
+            String name = ctx.IDENTIFIER().get(0).getText();
+            switch (ctx.IDENTIFIER().get(1).getText()) {
+                case "Int" -> types.put(name, "int");
+                case "String" -> types.put(name, "string");
+                case "Boolean" -> types.put(name, "bool");
+                default -> types.put(name, ctx.IDENTIFIER().get(1).getText());
+            }
+        }
+
+        @Override
         public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
             String name = ctx.IDENTIFIER().getText();
             if(ctx.operation() != null){
