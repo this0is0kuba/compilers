@@ -1,4 +1,4 @@
-// Generated from C:/Users/asiaw/Desktop/GitHub/compilers\scalaToCpp.g4 by ANTLR 4.12.0
+// Generated from C:/Users/Kuba/IdeaProjects/compilers\scalaToCpp.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
