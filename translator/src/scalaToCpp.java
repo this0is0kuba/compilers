@@ -368,7 +368,7 @@ public class scalaToCpp {
         @Override
         public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
             StringBuilder assignment = new StringBuilder();
-            assignment.append("\t".repeat(Math.max(0, indent_level)));
+            //assignment.append("\t".repeat(Math.max(0, indent_level)));
             Map<String, String> map = TypeListener.getTypes();
             if(map.containsKey(ctx.IDENTIFIER().getText())){
                 assignment.append(map.get(ctx.IDENTIFIER().getText())).append(" ");
@@ -578,7 +578,8 @@ public class scalaToCpp {
 
         @Override
         public void enterExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {
-            writeToOutput("\t".repeat(Math.max(0, indent_level)));
+            System.out.println(ctx.getParent().getRuleIndex());
+            if(!(ctx.getParent().getRuleIndex() == scalaToCppParser.RULE_returnVal)) writeToOutput("\t".repeat(Math.max(0, indent_level)));
         }
 
         @Override
