@@ -60,8 +60,12 @@ public class scalaToCpp {
         @Override
         public void enterDef(scalaToCppParser.DefContext ctx) {
             String name = ctx.IDENTIFIER().getText();
-            String type = ctx.returnType().IDENTIFIER().getText();
-            types.put(name, type);
+            if(ctx.returnType() != null){
+                String type = ctx.returnType().IDENTIFIER().getText();
+                types.put(name, type);
+            }else{
+                types.put(name, "void");
+            }
         }
 
         @Override
