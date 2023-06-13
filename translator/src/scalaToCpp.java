@@ -52,7 +52,10 @@ public class scalaToCpp {
     }
 
     private static class TypeListener extends scalaToCppBaseListener {
-        Map<String, String> types = new HashMap<>();
+        static Map<String, String> types = new HashMap<>();
+        public static Map<String, String> getTypes() {
+            return types;
+        }
 
         @Override
         public void enterDef(scalaToCppParser.DefContext ctx) {
@@ -71,11 +74,11 @@ public class scalaToCpp {
                 }else{
                     if(ctx.operation().literal().size() > 0) {
                         if(ctx.operation().literal().get(0).BOOLEAN_LITERAL() != null) {
-                            types.put(name, "Boolean");
+                            types.put(name, "bool");
                         }else if(ctx.operation().literal().get(0).INT_LITERAL() != null) {
-                            types.put(name, "Int");
+                            types.put(name, "int");
                         }else if(ctx.operation().literal().get(0).STRING_LITERAL() != null) {
-                            types.put(name, "String");
+                            types.put(name, "string");
                         }
                     }
                 }
@@ -89,11 +92,11 @@ public class scalaToCpp {
                 }
             }else{
                 if(ctx.listliteral().literal(0).INT_LITERAL() != null){
-                    types.put(name, "Vector<Int>");
+                    types.put(name, "vector<int>");
                 }else if(ctx.listliteral().literal(0).STRING_LITERAL() != null){
-                    types.put(name, "Vector<String>");
+                    types.put(name, "vector<string>");
                 }else if(ctx.listliteral().literal(0).BOOLEAN_LITERAL() != null){
-                    types.put(name, "Vector<Boolean>");
+                    types.put(name, "vector<boolean>");
                 }
             }
         }
@@ -261,8 +264,11 @@ public class scalaToCpp {
         public void enterDefinition(scalaToCppParser.DefinitionContext ctx) {
             StringBuilder definition = new StringBuilder();
             definition.append("\t".repeat(Math.max(0, indent_level)));
-            definition = definition.append("void*").append(ctx.IDENTIFIER().getText());
-            // !!!!!!!!!!!!!!!!!! TODO: add type
+            Map<String, String> map = TypeListener.getTypes();
+            if(map.containsKey(ctx.IDENTIFIER().getText())){
+                definition.append(map.get(ctx.IDENTIFIER().getText())).append(" ");
+            }
+            definition = definition.append(ctx.IDENTIFIER().getText());
             writeToOutput(definition.toString());
         }
         @Override
@@ -273,15 +279,19 @@ public class scalaToCpp {
         public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
             StringBuilder assignment = new StringBuilder();
             assignment.append("\t".repeat(Math.max(0, indent_level)));
+            Map<String, String> map = TypeListener.getTypes();
+            if(map.containsKey(ctx.IDENTIFIER().getText())){
+                assignment.append(map.get(ctx.IDENTIFIER().getText())).append(" ");
+            }
             assignment.append(ctx.IDENTIFIER().getText()).append(" = ");
             if(ctx.operation() != null){
                 assignment.append(ctx.operation().getText());
             }
-            if(ctx.creation() != null){
-                assignment.append(ctx.creation().getText());
-            }
-            if(ctx.listliteral() != null){
+            else if(ctx.listliteral() != null){
                 assignment.append(ctx.listliteral().getText());
+            }
+            else if(ctx.creation() != null){
+                assignment.append(ctx.creation().getText());
             }
             writeToOutput(assignment.toString());
         }
@@ -293,20 +303,15 @@ public class scalaToCpp {
         public void enterListliteral(scalaToCppParser.ListliteralContext ctx) {
             StringBuilder listliteral = new StringBuilder();
             listliteral.append("\t".repeat(Math.max(0, indent_level)));
+            Map<String, String> map = TypeListener.getTypes();
             listliteral.append("vector<");
-            if(ctx.literal().get(0) != null){
-                if(ctx.literal().get(0).INT_LITERAL() != null){
-                    listliteral.append("int");
-                }
-                if(ctx.literal().get(0).STRING_LITERAL() != null){
-                    listliteral.append("string");
-                }
-                if(ctx.literal().get(0).BOOLEAN_LITERAL() != null){
-                    listliteral.append("bool");
-                }
+            if(map.containsKey(ctx.literal(0).getText())){
+                listliteral.append(map.get(ctx.literal(0).getText())).append(" ");
             }
-            // !!!!!!!!!!!!!!!!!! TODO: add functions type
             listliteral.append(">");
+
+            writeToOutput(listliteral.toString());
+            // ?????????????????????????????????? WHERE IDENTIFIER
         }
         @Override
         public void exitListliteral(scalaToCppParser.ListliteralContext ctx) {
