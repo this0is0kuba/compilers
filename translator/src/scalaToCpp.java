@@ -165,11 +165,13 @@ public class scalaToCpp {
                 classDef.append(" ");
             }
             classDef.append("class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
+            indent_level += 1;
             writeToOutput(classDef.toString());
         }
 
         @Override
         public void exitClassDef(scalaToCppParser.ClassDefContext ctx) {
+            indent_level -= 1;
             String classDef = "\t".repeat(Math.max(0, indent_level)) +
                     "}\n";
             writeToOutput(classDef);
@@ -184,11 +186,13 @@ public class scalaToCpp {
                 objectDef.append(" ");
             }
             objectDef.append("class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
+            indent_level += 1;
             writeToOutput(objectDef.toString());
         }
 
         @Override
         public void exitObjectDef(scalaToCppParser.ObjectDefContext ctx) {
+            indent_level -= 1;
             String objectDef = "\t".repeat(Math.max(0, indent_level)) +
                     "}\n";
             writeToOutput(objectDef);
@@ -203,11 +207,13 @@ public class scalaToCpp {
                 traitDef.append(" ");
             }
             traitDef.append("abstract class ").append(ctx.IDENTIFIER().getText()).append(" {\n");
+            indent_level += 1;
             writeToOutput(traitDef.toString());
         }
 
         @Override
         public void exitTraitDef(scalaToCppParser.TraitDefContext ctx) {
+            indent_level -= 1;
             String traitDef = "\t".repeat(Math.max(0, indent_level)) +
                     "}\n";
             writeToOutput(traitDef);
@@ -228,11 +234,13 @@ public class scalaToCpp {
                 def.append("void ");
             }
             def.append(ctx.IDENTIFIER().getText());
+            indent_level += 1;
             writeToOutput(def.toString());
         }
 
         @Override
         public void exitDef(scalaToCppParser.DefContext ctx) {
+            indent_level -= 1;
         }
 
 
