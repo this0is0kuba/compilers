@@ -523,7 +523,7 @@ public class scalaToCpp {
         @Override
         public void exitLogicExpression(scalaToCppParser.LogicExpressionContext ctx) {
             StringBuilder ifStatmenet = new StringBuilder();
-            ifStatmenet.append(")");
+            ifStatmenet.append(")\n");
 
             writeToOutput(ifStatmenet.toString());
         }
