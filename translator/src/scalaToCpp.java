@@ -202,6 +202,70 @@ public class scalaToCpp {
 
         @Override
         public void enterDef(scalaToCppParser.DefContext ctx) {
+            StringBuilder def = new StringBuilder();
+            def.append("\t".repeat(Math.max(0, indent_level)));
+            if(ctx.accessModifier() != null){
+                def.append(ctx.accessModifier().getText());
+                def.append(" ");
+            }
+            if(types.containsKey(ctx.IDENTIFIER().getText())){
+                def.append(types.get(ctx.IDENTIFIER().getText()));
+                def.append(" ");
+            }else{
+                def.append("void ");
+            }
+            def.append(ctx.IDENTIFIER().getText());
+            writeToOutput(def.toString());
+        }
+
+        @Override
+        public void exitDef(scalaToCppParser.DefContext ctx) {
+        }
+
+
+        @Override
+        public void enterClassBody(scalaToCppParser.ClassBodyContext ctx) {
+        }
+
+        @Override
+        public void exitClassBody(scalaToCppParser.ClassBodyContext ctx) {
+        }
+
+        @Override
+        public void enterClassMember(scalaToCppParser.ClassMemberContext ctx) {
+        }
+
+        @Override
+        public void exitClassMember(scalaToCppParser.ClassMemberContext ctx) {
+        }
+
+        @Override
+        public void enterParameterList(scalaToCppParser.ParameterListContext ctx) {
+            StringBuilder parameterList = new StringBuilder();
+            parameterList.append("(");
+            if(ctx.parameter() == null){
+                parameterList.append(")");
+                writeToOutput(parameterList.toString());
+                return;
+            }
+            for(int i = 0; i < ctx.parameter().size(); i++){
+                parameterList.append(ctx.parameter(i).IDENTIFIER().get(0).getText());
+                parameterList.append(": ");
+                parameterList.append(types.get(ctx.parameter(i).IDENTIFIER().get(1).getText()));
+                if(i != ctx.parameter().size() - 1){
+                    parameterList.append(", ");
+                }
+                // add the type to the types map if it is not already present
+                if(!types.containsKey(ctx.parameter(i).IDENTIFIER().get(0).getText())){
+                    types.put(ctx.parameter(i).IDENTIFIER().get(0).getText(), ctx.parameter(i).IDENTIFIER().get(1).getText());
+                }
+            }
+            parameterList.append(")");
+            writeToOutput(parameterList.toString());
+        }
+
+        @Override
+        public void exitParameterList(scalaToCppParser.ParameterListContext ctx) {
         }
 
         @Override
