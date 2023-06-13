@@ -526,6 +526,48 @@ public class scalaToCpp {
 
             writeToOutput(whileStatmenet.toString());
         }
+
+        @Override
+        public void exitWhileStatement(scalaToCppParser.WhileStatementContext ctx) {}
+
+        @Override
+        public void enterForStatement(scalaToCppParser.ForStatementContext ctx) {
+            StringBuilder forStatmenet = new StringBuilder();
+            forStatmenet.append("\t".repeat(Math.max(0, indent_level)));
+            forStatmenet.append("for ( auto ");
+
+            writeToOutput(forStatmenet.toString());
+        }
+
+        @Override
+        public void exitForStatement(scalaToCppParser.ForStatementContext ctx) {}
+
+        @Override
+        public void enterEnumeration(scalaToCppParser.EnumerationContext ctx) {
+            StringBuilder enumeration = new StringBuilder();
+            enumeration.append(ctx.IDENTIFIER().getText() + " : ");
+
+            writeToOutput(enumeration.toString());
+        }
+
+        @Override
+        public void exitEnumeration(scalaToCppParser.EnumerationContext ctx) {
+            StringBuilder enumeration = new StringBuilder();
+            enumeration.append(" )");
+
+            writeToOutput(enumeration.toString());
+        }
+
+        @Override
+        public void enterExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {}
+
+        @Override
+        public void exitExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {
+            StringBuilder expressionStatement = new StringBuilder();
+            expressionStatement.append(";");
+
+            writeToOutput(expressionStatement.toString());
+        }
     }
 
     void processFile(){
