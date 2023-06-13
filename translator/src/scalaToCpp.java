@@ -91,11 +91,11 @@ public class scalaToCpp {
                     types.put(name, type);
                 }
             }else{
-                if(ctx.listliteral().literal(0).INT_LITERAL() != null){
+                if(ctx.listliteral().literal().INT_LITERAL() != null){
                     types.put(name, "vector<int>");
-                }else if(ctx.listliteral().literal(0).STRING_LITERAL() != null){
+                }else if(ctx.listliteral().literal().STRING_LITERAL() != null){
                     types.put(name, "vector<string>");
-                }else if(ctx.listliteral().literal(0).BOOLEAN_LITERAL() != null){
+                }else if(ctx.listliteral().literal().BOOLEAN_LITERAL() != null){
                     types.put(name, "vector<boolean>");
                 }
             }
@@ -127,14 +127,14 @@ public class scalaToCpp {
 
         @Override
         public void enterEveryRule(ParserRuleContext ctx){
-            indent_level += 1;
+            //indent_level += 1;
             int tokenType = ctx.getRuleIndex();
-            writeToOutput(String.valueOf(tokenType));
+            //writeToOutput(String.valueOf(tokenType));
         }
 
         @Override
         public void exitEveryRule(ParserRuleContext ctx){
-            indent_level -= 1;
+            //indent_level -= 1;
         }
 
         @Override
@@ -224,17 +224,14 @@ public class scalaToCpp {
         }
         @Override
         public void exitFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
-            writeToOutput(";\n");
+            writeToOutput("");
         }
         @Override
         public void enterObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
             StringBuilder objectMethodAccess = new StringBuilder();
             objectMethodAccess.append("\t".repeat(Math.max(0, indent_level)));
             objectMethodAccess.append(ctx.IDENTIFIER().get(0).getText()).append(".").append(ctx.IDENTIFIER().get(1).getText());
-            if(ctx.argumentList() != null){
-                objectMethodAccess.append(ctx.argumentList().getText());
-            }
-            else{
+            if(ctx.argumentList() == null){
                 objectMethodAccess.append("()");
             }
             writeToOutput(objectMethodAccess.toString());
@@ -242,23 +239,19 @@ public class scalaToCpp {
 
         @Override
         public void exitObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
-            writeToOutput(";\n");
+            writeToOutput("");
         }
         @Override
         public void enterArgumentList(scalaToCppParser.ArgumentListContext ctx) {
             writeToOutput("(");
-            StringBuilder argumentList = new StringBuilder();
-            for(int i = 0; i < ctx.expression().size(); i++){
-                argumentList.append(ctx.expression(i).getText());
-                if(i != ctx.expression().size() - 1){
-                    argumentList.append(", ");
-                }
-            }
-            writeToOutput(argumentList.toString());
         }
         @Override
         public void exitArgumentList(scalaToCppParser.ArgumentListContext ctx) {
             writeToOutput(")");
+        }
+        @Override
+        public void enterArgumentListElement(scalaToCppParser.ArgumentListElementContext ctx) {
+            writeToOutput(", ");
         }
         @Override
         public void enterDefinition(scalaToCppParser.DefinitionContext ctx) {
@@ -267,6 +260,9 @@ public class scalaToCpp {
             Map<String, String> map = TypeListener.getTypes();
             if(map.containsKey(ctx.IDENTIFIER().getText())){
                 definition.append(map.get(ctx.IDENTIFIER().getText())).append(" ");
+            }
+            else{
+                definition.append("void* ");
             }
             definition = definition.append(ctx.IDENTIFIER().getText());
             writeToOutput(definition.toString());
@@ -284,15 +280,7 @@ public class scalaToCpp {
                 assignment.append(map.get(ctx.IDENTIFIER().getText())).append(" ");
             }
             assignment.append(ctx.IDENTIFIER().getText()).append(" = ");
-            if(ctx.operation() != null){
-                assignment.append(ctx.operation().getText());
-            }
-            else if(ctx.listliteral() != null){
-                assignment.append(ctx.listliteral().getText());
-            }
-            else if(ctx.creation() != null){
-                assignment.append(ctx.creation().getText());
-            }
+
             writeToOutput(assignment.toString());
         }
         @Override
@@ -303,19 +291,18 @@ public class scalaToCpp {
         public void enterListliteral(scalaToCppParser.ListliteralContext ctx) {
             StringBuilder listliteral = new StringBuilder();
             listliteral.append("\t".repeat(Math.max(0, indent_level)));
-            Map<String, String> map = TypeListener.getTypes();
-            listliteral.append("vector<");
-            if(map.containsKey(ctx.literal(0).getText())){
-                listliteral.append(map.get(ctx.literal(0).getText())).append(" ");
-            }
-            listliteral.append(">");
+            listliteral.append("{");
 
             writeToOutput(listliteral.toString());
-            // ?????????????????????????????????? WHERE IDENTIFIER
+
         }
         @Override
         public void exitListliteral(scalaToCppParser.ListliteralContext ctx) {
-            writeToOutput(";\n");
+            writeToOutput("}");
+        }
+        @Override
+        public void enterListLiteralElement(scalaToCppParser.ListLiteralElementContext ctx) {
+            writeToOutput(", ");
         }
         @Override
         public void enterOperation(scalaToCppParser.OperationContext ctx) {
@@ -330,9 +317,7 @@ public class scalaToCpp {
             writeToOutput(operation.toString());
         }
         @Override
-        public void exitOperation(scalaToCppParser.OperationContext ctx) {
-            writeToOutput(";\n");
-        }
+        public void exitOperation(scalaToCppParser.OperationContext ctx) {}
 
         @Override
         public void enterCreation(scalaToCppParser.CreationContext ctx) {
@@ -342,7 +327,6 @@ public class scalaToCpp {
         }
         @Override
         public void exitCreation(scalaToCppParser.CreationContext ctx) {
-            writeToOutput(";\n");
         }
         @Override
         public void enterBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {
@@ -369,7 +353,7 @@ public class scalaToCpp {
 
         @Override
         public void exitLiteral(scalaToCppParser.LiteralContext ctx) {
-            writeToOutput(" ");
+            writeToOutput("");
         }
 
         @Override
