@@ -578,7 +578,6 @@ public class scalaToCpp {
 
         @Override
         public void enterExpressionStatement(scalaToCppParser.ExpressionStatementContext ctx) {
-            System.out.println(ctx.getParent().getRuleIndex());
             if(!(ctx.getParent().getRuleIndex() == scalaToCppParser.RULE_returnVal)) writeToOutput("\t".repeat(Math.max(0, indent_level)));
         }
 
