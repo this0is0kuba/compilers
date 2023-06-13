@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class scalaToCpp {
 
-    public Map<String, String> types;
+    public static Map<String, String> types;
 
     private static class DebugListener extends scalaToCppBaseListener {
         private int indent_level = 0;
@@ -222,10 +222,12 @@ public class scalaToCpp {
                     ctx.IDENTIFIER().getText();
             writeToOutput(functionCall);
         }
+
         @Override
         public void exitFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
             writeToOutput("");
         }
+
         @Override
         public void enterObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
             StringBuilder objectMethodAccess = new StringBuilder();
@@ -241,14 +243,17 @@ public class scalaToCpp {
         public void exitObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
             writeToOutput("");
         }
+
         @Override
         public void enterArgumentList(scalaToCppParser.ArgumentListContext ctx) {
             writeToOutput("(");
         }
+
         @Override
         public void exitArgumentList(scalaToCppParser.ArgumentListContext ctx) {
             writeToOutput(")");
         }
+
         @Override
         public void enterArgumentListElement(scalaToCppParser.ArgumentListElementContext ctx) {
             writeToOutput(", ");
@@ -267,10 +272,12 @@ public class scalaToCpp {
             definition = definition.append(ctx.IDENTIFIER().getText());
             writeToOutput(definition.toString());
         }
+
         @Override
         public void exitDefinition(scalaToCppParser.DefinitionContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
             StringBuilder assignment = new StringBuilder();
@@ -283,10 +290,12 @@ public class scalaToCpp {
 
             writeToOutput(assignment.toString());
         }
+
         @Override
         public void exitAssignment(scalaToCppParser.AssignmentContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterListliteral(scalaToCppParser.ListliteralContext ctx) {
             StringBuilder listliteral = new StringBuilder();
@@ -296,6 +305,7 @@ public class scalaToCpp {
             writeToOutput(listliteral.toString());
 
         }
+
         @Override
         public void exitListliteral(scalaToCppParser.ListliteralContext ctx) {
             writeToOutput("}");
@@ -304,6 +314,7 @@ public class scalaToCpp {
         public void enterListLiteralElement(scalaToCppParser.ListLiteralElementContext ctx) {
             writeToOutput(", ");
         }
+
         @Override
         public void enterOperation(scalaToCppParser.OperationContext ctx) {
             StringBuilder operation = new StringBuilder();
@@ -316,6 +327,7 @@ public class scalaToCpp {
             }
             writeToOutput(operation.toString());
         }
+
         @Override
         public void exitOperation(scalaToCppParser.OperationContext ctx) {}
 
@@ -325,24 +337,30 @@ public class scalaToCpp {
                     "new ";
             writeToOutput(creation);
         }
+
         @Override
         public void exitCreation(scalaToCppParser.CreationContext ctx) {
         }
+
         @Override
         public void enterBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {
             writeToOutput(ctx.getText());
         }
+
         @Override public void exitBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {}
 
         @Override
         public void enterUnaryOperator(scalaToCppParser.UnaryOperatorContext ctx) {
             writeToOutput(ctx.getText());
         }
+
         @Override public void exitUnaryOperator(scalaToCppParser.UnaryOperatorContext ctx) {}
+
         @Override
         public void enterSimpleOperator(scalaToCppParser.SimpleOperatorContext ctx) {
             writeToOutput(ctx.getText());
         }
+
         @Override public void exitSimpleOperator(scalaToCppParser.SimpleOperatorContext ctx) {}
 
         @Override
@@ -455,7 +473,7 @@ public class scalaToCpp {
         TypeListener listenerPrep = new TypeListener();
         walkerPrep.walk(listenerPrep, tree);
 
-        types = listenerPrep.types;
+        types = TypeListener.types;
         for (Map.Entry<String, String> entry : types.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
