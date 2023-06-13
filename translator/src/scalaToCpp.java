@@ -249,15 +249,11 @@ public class scalaToCpp {
                 return;
             }
             for(int i = 0; i < ctx.parameter().size(); i++){
+                parameterList.append(types.get(ctx.parameter(i).IDENTIFIER().get(0).getText()));
+                parameterList.append(" ");
                 parameterList.append(ctx.parameter(i).IDENTIFIER().get(0).getText());
-                parameterList.append(": ");
-                parameterList.append(types.get(ctx.parameter(i).IDENTIFIER().get(1).getText()));
                 if(i != ctx.parameter().size() - 1){
                     parameterList.append(", ");
-                }
-                // add the type to the types map if it is not already present
-                if(!types.containsKey(ctx.parameter(i).IDENTIFIER().get(0).getText())){
-                    types.put(ctx.parameter(i).IDENTIFIER().get(0).getText(), ctx.parameter(i).IDENTIFIER().get(1).getText());
                 }
             }
             parameterList.append(")");
