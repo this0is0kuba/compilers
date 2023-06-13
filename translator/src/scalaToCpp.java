@@ -15,6 +15,8 @@ import java.util.Map;
 public class scalaToCpp {
 
     public static Map<String, String> types;
+    File input;
+    File output = new File("translator/src/test.cpp");
 
     private static class DebugListener extends scalaToCppBaseListener {
         private int indent_level = 0;
@@ -128,18 +130,10 @@ public class scalaToCpp {
     private static class ProdListener extends scalaToCppBaseListener{
         private int indent_level = 0;
         private final PrintWriter writer;
-        private String path;
         private File output;
 
         private void writeToOutput(String s){
             writer.append(s);
-        }
-
-        public ProdListener(String path) throws IOException {
-            this.path = path;
-            output = new File(path);
-            writer = new PrintWriter(this.output);
-            if(!output.createNewFile()) writer.print("");
         }
 
         public ProdListener(File file) throws IOException {
@@ -616,13 +610,12 @@ public class scalaToCpp {
 
     }
 
-    void processFile(){
-        CharStream input = null;
-        try {
-            input = CharStreams.fromFileName("translator/src/test.scala");
-        } catch (IOException e) {
-            e.printStackTrace();
+    void processFile() throws IOException {
+        if(!this.input.exists()) {
+            System.out.println("File does not exist");
+            return;
         }
+        CharStream input = CharStreams.fromFileName(this.input.getAbsolutePath());
         Lexer lexer = new scalaToCppLexer(input);
         TokenStream tokens = new CommonTokenStream(lexer);
         scalaToCppParser parser = new scalaToCppParser(tokens);
@@ -645,7 +638,7 @@ public class scalaToCpp {
 
         scalaToCppListener listener = null;
         try {
-            listener = new ProdListener("translator/src/test.cpp");
+            listener = new ProdListener(output);
             walker.walk(listener, tree);
         } catch (IOException e) {
             e.printStackTrace();
