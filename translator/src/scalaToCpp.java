@@ -549,7 +549,7 @@ public class scalaToCpp {
         public void enterWhileStatement(scalaToCppParser.WhileStatementContext ctx) {
             StringBuilder whileStatmenet = new StringBuilder();
             whileStatmenet.append("\t".repeat(Math.max(0, indent_level)));
-            whileStatmenet.append("while (" + ctx.logicExpression().getText() + ")\n");
+            whileStatmenet.append("while (");
 
             writeToOutput(whileStatmenet.toString());
         }
