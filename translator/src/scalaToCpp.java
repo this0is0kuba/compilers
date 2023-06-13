@@ -222,10 +222,12 @@ public class scalaToCpp {
                     ctx.IDENTIFIER().getText();
             writeToOutput(functionCall);
         }
+
         @Override
         public void exitFunctionCall(scalaToCppParser.FunctionCallContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
             StringBuilder objectMethodAccess = new StringBuilder();
@@ -244,6 +246,7 @@ public class scalaToCpp {
         public void exitObjectMethodAccess(scalaToCppParser.ObjectMethodAccessContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterArgumentList(scalaToCppParser.ArgumentListContext ctx) {
             writeToOutput("(");
@@ -256,10 +259,12 @@ public class scalaToCpp {
             }
             writeToOutput(argumentList.toString());
         }
+
         @Override
         public void exitArgumentList(scalaToCppParser.ArgumentListContext ctx) {
             writeToOutput(")");
         }
+
         @Override
         public void enterDefinition(scalaToCppParser.DefinitionContext ctx) {
             StringBuilder definition = new StringBuilder();
@@ -271,10 +276,12 @@ public class scalaToCpp {
             definition = definition.append(ctx.IDENTIFIER().getText());
             writeToOutput(definition.toString());
         }
+
         @Override
         public void exitDefinition(scalaToCppParser.DefinitionContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterAssignment(scalaToCppParser.AssignmentContext ctx) {
             StringBuilder assignment = new StringBuilder();
@@ -295,10 +302,12 @@ public class scalaToCpp {
             }
             writeToOutput(assignment.toString());
         }
+
         @Override
         public void exitAssignment(scalaToCppParser.AssignmentContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterListliteral(scalaToCppParser.ListliteralContext ctx) {
             StringBuilder listliteral = new StringBuilder();
@@ -313,10 +322,12 @@ public class scalaToCpp {
             writeToOutput(listliteral.toString());
             // ?????????????????????????????????? WHERE IDENTIFIER
         }
+
         @Override
         public void exitListliteral(scalaToCppParser.ListliteralContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterOperation(scalaToCppParser.OperationContext ctx) {
             StringBuilder operation = new StringBuilder();
@@ -329,6 +340,7 @@ public class scalaToCpp {
             }
             writeToOutput(operation.toString());
         }
+
         @Override
         public void exitOperation(scalaToCppParser.OperationContext ctx) {
             writeToOutput(";\n");
@@ -340,25 +352,31 @@ public class scalaToCpp {
                     "new ";
             writeToOutput(creation);
         }
+
         @Override
         public void exitCreation(scalaToCppParser.CreationContext ctx) {
             writeToOutput(";\n");
         }
+
         @Override
         public void enterBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {
             writeToOutput(ctx.getText());
         }
+
         @Override public void exitBinaryOperator(scalaToCppParser.BinaryOperatorContext ctx) {}
 
         @Override
         public void enterUnaryOperator(scalaToCppParser.UnaryOperatorContext ctx) {
             writeToOutput(ctx.getText());
         }
+
         @Override public void exitUnaryOperator(scalaToCppParser.UnaryOperatorContext ctx) {}
+
         @Override
         public void enterSimpleOperator(scalaToCppParser.SimpleOperatorContext ctx) {
             writeToOutput(ctx.getText());
         }
+
         @Override public void exitSimpleOperator(scalaToCppParser.SimpleOperatorContext ctx) {}
 
         @Override
@@ -471,7 +489,7 @@ public class scalaToCpp {
         TypeListener listenerPrep = new TypeListener();
         walkerPrep.walk(listenerPrep, tree);
 
-        types = listenerPrep.types;
+        types = TypeListener.types;
         for (Map.Entry<String, String> entry : types.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
