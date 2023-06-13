@@ -101,13 +101,15 @@ public class scalaToCpp {
                     String type = types.get(ctx.creation().functionCall().IDENTIFIER().toString());
                     types.put(name, type);
                 }
-            }else{
-                if(ctx.listliteral().literal().INT_LITERAL() != null){
-                    types.put(name, "vector<int>");
-                }else if(ctx.listliteral().literal().STRING_LITERAL() != null){
-                    types.put(name, "vector<string>");
-                }else if(ctx.listliteral().literal().BOOLEAN_LITERAL() != null){
-                    types.put(name, "vector<boolean>");
+            }else {
+                if (ctx.listliteral().literal() != null) {
+                    if (ctx.listliteral().literal().INT_LITERAL() != null) {
+                        types.put(name, "vector<int>");
+                    } else if (ctx.listliteral().literal().STRING_LITERAL() != null) {
+                        types.put(name, "vector<string>");
+                    } else if (ctx.listliteral().literal().BOOLEAN_LITERAL() != null) {
+                        types.put(name, "vector<boolean>");
+                    }
                 }
             }
         }
@@ -284,7 +286,7 @@ public class scalaToCpp {
 
         @Override
         public void exitExpression(scalaToCppParser.ExpressionContext ctx) {
-            writeToOutput(" ");
+            writeToOutput("");
         }
 
         @Override
