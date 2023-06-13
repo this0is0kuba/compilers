@@ -512,7 +512,18 @@ public class scalaToCpp {
         public void enterIfStatement(scalaToCppParser.IfStatementContext ctx) {
             StringBuilder ifStatmenet = new StringBuilder();
             ifStatmenet.append("\t".repeat(Math.max(0, indent_level)));
-            ifStatmenet.append("if (" + ctx.logicExpression().getText() + ")\n");
+            ifStatmenet.append("if (");
+
+            writeToOutput(ifStatmenet.toString());
+        }
+
+        @Override
+        public void enterLogicExpression(scalaToCppParser.LogicExpressionContext ctx) {}
+
+        @Override
+        public void exitLogicExpression(scalaToCppParser.LogicExpressionContext ctx) {
+            StringBuilder ifStatmenet = new StringBuilder();
+            ifStatmenet.append(")");
 
             writeToOutput(ifStatmenet.toString());
         }
