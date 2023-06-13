@@ -159,6 +159,15 @@ public class scalaToCpp {
         public void exitEveryRule(ParserRuleContext ctx){
             //indent_level -= 1;
         }
+        @Override
+        public void enterPlure(scalaToCppParser.PlureContext ctx) {
+            StringBuilder plure = new StringBuilder();
+            plure.append("#include <iostream>\n");
+            plure.append("#include <vector>\n");
+            plure.append("#include <string>\n");
+            plure.append("using namespace std;\n\n");
+            writeToOutput(plure.toString());
+        }
 
         @Override
         public void exitPlure(scalaToCppParser.PlureContext ctx) {

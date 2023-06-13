@@ -1,6 +1,7 @@
 private class Class{
     def funkcja(arg : Int) : String = {
         val x = "hehe";
+        val y = List(Class(1,2,3), Class(4,5,6));
 
         if(x == "hehe") {
             funckja(2);
