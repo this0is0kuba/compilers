@@ -115,6 +115,12 @@ public class scalaToCpp {
                         types.put(name, "vector<boolean>");
                     }
                 }
+                else if(ctx.listliteral().creation() != null){
+                    if(ctx.listliteral().creation().functionCall().IDENTIFIER() != null){
+                        String type = ctx.listliteral().creation().functionCall().IDENTIFIER().toString();
+                        types.put(name, "vector<" + type + ">");
+                    }
+                }
             }
         }
     }
@@ -380,7 +386,6 @@ public class scalaToCpp {
         @Override
         public void enterListliteral(scalaToCppParser.ListliteralContext ctx) {
             StringBuilder listliteral = new StringBuilder();
-            listliteral.append("\t".repeat(Math.max(0, indent_level)));
             listliteral.append("{");
 
             writeToOutput(listliteral.toString());
