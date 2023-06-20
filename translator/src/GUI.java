@@ -90,7 +90,10 @@ public class GUI extends Application{
 
         translateToButton.setOnAction(e -> {
             output = fileChooser2.showSaveDialog(primaryStage);
-            if (output.exists() && !(output == null)) {
+            if (output == null) {
+                return;
+            }
+            if (output.exists()) {
                 try {
                     translator.output = output;
                 } catch (Exception ex) {
