@@ -59,21 +59,38 @@ public class GUI extends Application{
         });
         TextArea textArea2 = new TextArea();
         textArea2.setEditable(false);
+        TextArea textArea3 = new TextArea();
+        textArea3.setEditable(false);
+        textArea3.setStyle("-fx-text-fill: #d8706a;");
+        textArea3.setMinWidth(860);
+        textArea3.setMinHeight(75);
+        textArea3.setText("Errors will be displayed here");
+
+
         Button translateButton = new Button("Translate");
+
+
         translateButton.setOnAction(e -> {
             try {
                 var errors = translator.processFile();
-                // translator.processFile() now returns a list of soft errors that do not stop the translation
-                // but are a sign that our grammar is potentially flawed
-                // The main list contains smaller lists, each of the smaller lists contains errors line by line
-                // TODO: maybe represent the errors in the GUI?? (not sure if it's of any use to the user)
+                if(!errors.isEmpty()){
+                    StringBuilder sb = new StringBuilder();
+                    for(var error : errors){
+                        sb.append(error);
+                        sb.append("\n");
+                    }
+                    textArea3.setText(sb.toString());
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
-                System.out.println(exception.getMessage());
-                // exception.cause gives access to the core exception (often of type RecognitionException)
-                // the summary is contained in exception.getMessage() but the full stack trace is in exception.cause
-                // TODO: represent the error in the GUI
+                StringBuilder sb = new StringBuilder();
+                sb.append(exception.getMessage());
+                if(exception.cause != null){
+                    sb.append(exception.cause.getMessage());
+                }
+                textArea3.setText(sb.toString());
+                return;
             }
             StringBuilder sb = new StringBuilder();
             Scanner scanner;
@@ -119,15 +136,24 @@ public class GUI extends Application{
             }
             try {
                 var errors = translator.processFile();
-                // translator.processFile() now returns a list of soft errors that do not stop the translation
-                // but are a sign that our grammar is potentially flawed
-                // The main list contains smaller lists, each of the smaller lists contains errors line by line
+                if(!errors.isEmpty()){
+                    StringBuilder sb = new StringBuilder();
+                    for(var error : errors){
+                        sb.append(error);
+                        sb.append("\n");
+                    }
+                    textArea3.setText(sb.toString());
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
-            }catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
-                System.out.println(exception.getMessage());
-                // exception.cause gives access to the core exception (often of type RecognitionException)
-                // the summary is contained in exception.getMessage() but the full stack trace is in exception.cause
+            } catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
+                StringBuilder sb = new StringBuilder();
+                sb.append(exception.getMessage());
+                if(exception.cause != null){
+                    sb.append(exception.cause.getMessage());
+                }
+                textArea3.setText(sb.toString());
+                return;
             }
             StringBuilder sb = new StringBuilder();
             Scanner scanner;
@@ -163,7 +189,11 @@ public class GUI extends Application{
         hBox2.setAlignment(Pos.CENTER);
         hBox2.getChildren().addAll(textArea1, textArea2);
 
-        vBox.getChildren().addAll(hBox1, hBox2);
+        HBox hBox3 = new HBox();
+        hBox3.setAlignment(Pos.CENTER);
+        hBox3.getChildren().addAll(textArea3);
+
+        vBox.getChildren().addAll(hBox1, hBox2, hBox3);
 
         Scene scene = new Scene(vBox, 900, 600);
         primaryStage.setTitle("Translator");
