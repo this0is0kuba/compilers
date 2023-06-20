@@ -62,9 +62,18 @@ public class GUI extends Application{
         Button translateButton = new Button("Translate");
         translateButton.setOnAction(e -> {
             try {
-                translator.processFile();
+                var errors = translator.processFile();
+                // translator.processFile() now returns a list of soft errors that do not stop the translation
+                // but are a sign that our grammar is potentially flawed
+                // The main list contains smaller lists, each of the smaller lists contains errors line by line
+                // TODO: maybe represent the errors in the GUI?? (not sure if it's of any use to the user)
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
+                System.out.println(exception.getMessage());
+                // exception.cause gives access to the core exception (often of type RecognitionException)
+                // the summary is contained in exception.getMessage() but the full stack trace is in exception.cause
+                // TODO: represent the error in the GUI
             }
             StringBuilder sb = new StringBuilder();
             Scanner scanner;
@@ -109,9 +118,16 @@ public class GUI extends Application{
                 }
             }
             try {
-                translator.processFile();
+                var errors = translator.processFile();
+                // translator.processFile() now returns a list of soft errors that do not stop the translation
+                // but are a sign that our grammar is potentially flawed
+                // The main list contains smaller lists, each of the smaller lists contains errors line by line
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            }catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
+                System.out.println(exception.getMessage());
+                // exception.cause gives access to the core exception (often of type RecognitionException)
+                // the summary is contained in exception.getMessage() but the full stack trace is in exception.cause
             }
             StringBuilder sb = new StringBuilder();
             Scanner scanner;

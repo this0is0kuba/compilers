@@ -1,4 +1,7 @@
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -7,9 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class scalaToCpp {
@@ -17,39 +18,69 @@ public class scalaToCpp {
     public static Map<String, String> types;
     File input;
     File output = new File("translator/src/test.cpp");
+    public static List<List<String>> errors = new ArrayList<>();
 
-    private static class DebugListener extends scalaToCppBaseListener {
-        private int indent_level = 0;
-        @Override
-        public void enterEveryRule(ParserRuleContext ctx) {
-            for(int i = 0; i < indent_level; i++) {
-                System.out.print("  |  ");
+    public static class ErrorListener extends scalaToCppBaseListener implements ANTLRErrorListener {
+
+        public static class ErrorListenerException extends RuntimeException {
+            Throwable cause;
+            public ErrorListenerException(String message, Throwable cause) {
+                super(message);
+                this.cause = cause;
             }
-            indent_level += 1;
-            int tokenType = ctx.getRuleIndex();
-            String tokenName = scalaToCppParser.ruleNames[tokenType];
-            String tokenContent = ctx.getText();
-
-            System.out.print("Entering   " +  "Token: " + tokenName + " - " + tokenContent + "  ");
-
-            List<TerminalNode> identifiers = ctx.getTokens(scalaToCppParser.IDENTIFIER);
-            if(identifiers.size() > 0) {
-                for( TerminalNode identifier : identifiers) {
-                    System.out.print("!Found identifier: " + identifier.getText() + "  ");
-                }
-            }
-            System.out.println();
         }
 
         @Override
-        public void exitEveryRule(ParserRuleContext ctx) {
-            indent_level -= 1;
-            for(int i = 0; i < indent_level; i++) {
-                System.out.print("  |  ");
+        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+            String sourceName = recognizer.getInputStream().getSourceName();
+            String errorMsg = "Syntax error in " + sourceName + " at line " + line + ", position " + charPositionInLine + ": " + msg;
+            throw new ErrorListenerException(errorMsg, e);
+        }
+
+        @Override
+        public void reportAmbiguity(Parser parser, DFA dfa, int startIndex, int stopIndex, boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
+            String inputText = parser.getTokenStream().getText(new Interval(startIndex, stopIndex));
+            List<String> error = new ArrayList<>();
+            error.add("Ambiguity detected from index " + startIndex + " to " + stopIndex + " in input: " + inputText);
+            error.add("Conflicting alternative(s): " + getAlternativeLabels(parser, ambigAlts));
+            errors.add(error);
+        }
+
+        @Override
+        public void reportAttemptingFullContext(Parser parser, DFA dfa, int startIndex, int stopIndex, BitSet conflictingAlts, ATNConfigSet atnConfigSet) {
+            String inputText = parser.getTokenStream().getText(new Interval(startIndex, stopIndex));
+            List<String> error = new ArrayList<>();
+            error.add("Attempting full context parsing from index " + startIndex + " to " + stopIndex + " in input: " + inputText);
+            error.add("Conflicting alternative(s): " + getAlternativeLabels(parser, conflictingAlts));
+            errors.add(error);
+        }
+
+        @Override
+        public void reportContextSensitivity(Parser parser, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet atnConfigSet) {
+            String inputText = parser.getTokenStream().getText(new Interval(startIndex, stopIndex));
+            String predictedAlternative = getPredictedAlternativeLabel(parser, prediction);
+            List<String> error = new ArrayList<>();
+            error.add("Context sensitivity detected from index " + startIndex + " to " + stopIndex + " in input: " + inputText);
+            error.add("Predicted alternative: " + predictedAlternative);
+            errors.add(error);
+        }
+
+        private String getAlternativeLabels(Parser parser, BitSet altSet) {
+            StringJoiner joiner = new StringJoiner(", ");
+
+            for (int i = altSet.nextSetBit(0); i >= 0; i = altSet.nextSetBit(i + 1)) {
+                String altLabel = parser.getRuleNames()[parser.getATN().decisionToState.get(i).ruleIndex];
+                joiner.add(altLabel);
             }
-            int tokenType = ctx.getRuleIndex();
-            String tokenName = scalaToCppParser.ruleNames[tokenType];
-            System.out.println("Exiting    " +  "Token: " + tokenName);
+
+            return joiner.toString();
+        }
+
+        private String getPredictedAlternativeLabel(Parser parser, int alternativeNumber) {
+            String[] ruleNames = parser.getRuleNames();
+            String ruleLabel = ruleNames[parser.getContext().getRuleIndex()];
+
+            return ruleLabel + " - Alternative " + alternativeNumber;
         }
     }
 
@@ -610,15 +641,16 @@ public class scalaToCpp {
 
     }
 
-    void processFile() throws IOException {
+    List<List<String>> processFile() throws IOException, ErrorListener.ErrorListenerException {
         if(!this.input.exists()) {
             System.out.println("File does not exist");
-            return;
+            return null;
         }
         CharStream input = CharStreams.fromFileName(this.input.getAbsolutePath());
         Lexer lexer = new scalaToCppLexer(input);
         TokenStream tokens = new CommonTokenStream(lexer);
         scalaToCppParser parser = new scalaToCppParser(tokens);
+        parser.addErrorListener(new ErrorListener());
         ParseTree tree = parser.plure();
         ParseTreeWalker walkerPrep = new ParseTreeWalker();
         ParseTreeWalker walker = new ParseTreeWalker();
@@ -643,5 +675,6 @@ public class scalaToCpp {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return errors;
     }
 }
