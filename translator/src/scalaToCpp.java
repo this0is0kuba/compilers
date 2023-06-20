@@ -642,9 +642,8 @@ public class scalaToCpp {
     }
 
     List<List<String>> processFile() throws IOException, ErrorListener.ErrorListenerException {
-        if(!this.input.exists()) {
-            System.out.println("File does not exist");
-            return null;
+        if(this.input == null) {
+            throw new ErrorListener.ErrorListenerException("File does not exist", new FileNotFoundException());
         }
         CharStream input = CharStreams.fromFileName(this.input.getAbsolutePath());
         Lexer lexer = new scalaToCppLexer(input);

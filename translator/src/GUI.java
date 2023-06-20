@@ -63,31 +63,27 @@ public class GUI extends Application{
         textArea3.setEditable(false);
         textArea3.setStyle("-fx-text-fill: #d8706a;");
         textArea3.setMinWidth(860);
-        textArea3.setMinHeight(75);
+        textArea3.setMinHeight(85);
         textArea3.setText("Errors will be displayed here");
 
 
         Button translateButton = new Button("Translate");
-
-
         translateButton.setOnAction(e -> {
+            textArea3.setText("");
             try {
                 var errors = translator.processFile();
-                if(!errors.isEmpty()){
-                    StringBuilder sb = new StringBuilder();
-                    for(var error : errors){
-                        sb.append(error);
-                        sb.append("\n");
-                    }
-                    textArea3.setText(sb.toString());
-                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
                 StringBuilder sb = new StringBuilder();
                 sb.append(exception.getMessage());
+                sb.append(": ");
                 if(exception.cause != null){
-                    sb.append(exception.cause.getMessage());
+                    StackTraceElement[] stackTraceElements = exception.cause.getStackTrace();
+                    for(StackTraceElement stackTraceElement : stackTraceElements){
+                        sb.append(stackTraceElement.toString());
+                        sb.append("\n");
+                    }
                 }
                 textArea3.setText(sb.toString());
                 return;
@@ -115,6 +111,7 @@ public class GUI extends Application{
 
 
         translateToButton.setOnAction(e -> {
+            textArea3.setText("");
             output = fileChooser2.showSaveDialog(primaryStage);
             if (output == null) {
                 return;
@@ -136,23 +133,19 @@ public class GUI extends Application{
             }
             try {
                 var errors = translator.processFile();
-                if(!errors.isEmpty()){
-                    StringBuilder sb = new StringBuilder();
-                    for(var error : errors){
-                        sb.append(error);
-                        sb.append("\n");
-                    }
-                    textArea3.setText(sb.toString());
-                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (scalaToCpp.ErrorListener.ErrorListenerException exception){
                 StringBuilder sb = new StringBuilder();
                 sb.append(exception.getMessage());
+                sb.append(": ");
                 if(exception.cause != null){
-                    sb.append(exception.cause.getMessage());
+                    StackTraceElement[] stackTraceElements = exception.cause.getStackTrace();
+                    for(StackTraceElement stackTraceElement : stackTraceElements){
+                        sb.append(stackTraceElement.toString());
+                        sb.append("\n");
+                    }
                 }
-                textArea3.setText(sb.toString());
                 return;
             }
             StringBuilder sb = new StringBuilder();
