@@ -1,25 +1,24 @@
 public class Max
 {
     def max(a: Int, b: Int, c: Int) : Int = {
-        val maxVal = a;
 
         if(a > b) {
             if(a > c) {
-                maxVal = a;
+                println(a);
             }
             else {
-                maxVal = c;
+                println(c);
             }
         }
         else {
             if(b > c) {
-                maxVal = b;
+                println(b);
             }
             else {
-                maxVal = c;
+                println(c);
             }
         }
 
-        return maxVal;
+        return 1;
     }
 }
