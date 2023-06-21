@@ -79,6 +79,8 @@ public class GUI extends Application{
                 sb.append(exception.getMessage());
                 sb.append(": ");
                 if(exception.cause != null){
+                    sb.append("\n");
+                    sb.append("Stack trace: \n");
                     StackTraceElement[] stackTraceElements = exception.cause.getStackTrace();
                     for(StackTraceElement stackTraceElement : stackTraceElements){
                         sb.append(stackTraceElement.toString());
